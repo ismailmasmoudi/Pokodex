@@ -6,7 +6,7 @@ function showLoadingSpinner() {
     document.getElementById('footer').style.display = 'none';
     setTimeout(() => {
         document.getElementById('loading-container').style.display = 'none';
-       
+
     }, 1000);
     fetchAndDisplayPokemonList();
 }
@@ -66,7 +66,8 @@ function showNextPokemon() {
     if (currentPokemonIndex < pokemonData.length - 1) {
         currentPokemonIndex++;
         updatePopupContent(currentPokemonIndex);
-     } }
+    }
+}
 
 function updatePopupContent(currentPokemonIndex) {
     const pokemon = pokemonData[currentPokemonIndex];
@@ -77,7 +78,7 @@ function updatePopupContent(currentPokemonIndex) {
     let pokemonTypes = pokemonType.join(', ');
 
     const popupContent = document.getElementById('pokemon-popup');
-        popupContent.innerHTML = /*html*/`
+    popupContent.innerHTML = /*html*/`
         <div class="popup-top">
             <h2>${pokemonName} (ID: ${pokemonId})</h2>
             <div class="bg_${pokemonType[0]} image-cadre">  <img src="${pokemonImage}" alt="${pokemonName}" class="pokemon-image"> </div>
@@ -95,7 +96,7 @@ function updatePopupContent(currentPokemonIndex) {
             <div id="popup-content" class="popup-content">
             </div>
         `;
-        showMainInfo(currentPokemonIndex);
+    showMainInfo(currentPokemonIndex);
 }
 
 function showPokemonDetails(i) {

@@ -5,6 +5,17 @@ body {
     margin: 0;
 }
 
+/* playwrite-de-grund-regular - latin */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Playwrite DE Grund';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/playwrite-de-grund-v4-latin-regular.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
 .header {
     display: flex;
     justify-content: space-between;

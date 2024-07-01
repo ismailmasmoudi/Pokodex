@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokodex</title>
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="img/pokemon-logo.png" type="img/pokemon-logo.png">
-
-    <!-- Google font  -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playwrite+DE+Grund:wght@100..400&display=swap" rel="stylesheet">
     <script src="script.js"></script>
 </head>
+
 <body onload="showLoadingSpinner()">
     <header class="header">
         <div class="logo-container">
             <a class="logo-anker" href="index.html"><img src="img/pokemon-logo.png" alt="Pokémon Logo" class="logo"></a>
-            <a class="title-anker" href="index.html"> <p class="site-title">Pokodex</p> </a>
+            <a class="title-anker" href="index.html">
+                <p class="site-title">Pokodex</p>
+            </a>
         </div>
         <div class="search-container">
-            <input type="text" id="search" class="search" maxlength="10" placeholder="schreib hier Name von Pokemon zu suchen .." onkeyup="filterNames()">
+            <input type="text" id="search" class="search" maxlength="10"
+                placeholder="schreib hier Name von Pokemon zu suchen .." onkeyup="filterNames()">
         </div>
     </header>
     <div id="loading-container" class="loading-container">
@@ -31,7 +31,7 @@
     <div id="overlay" class="overlay" onclick="closePopup()">
     </div>
     <div id="pokemon-popup" class="pokemon-popup">
-        
+
     </div>
     <footer id="footer" class="footer">
         <div class="left-footer">
@@ -43,4 +43,5 @@
     </footer>
 
 </body>
+
 </html>
