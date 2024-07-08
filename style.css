@@ -7,14 +7,12 @@ body {
 
 /* playwrite-de-grund-regular - latin */
 @font-face {
-    font-display: swap;
-    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
     font-family: 'Playwrite DE Grund';
     font-style: normal;
     font-weight: 400;
-    src: url('../fonts/playwrite-de-grund-v4-latin-regular.woff2') format('woff2');
-    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
+    src: url('./fonts/playwrite-de-grund-v4-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  }
 
 .header {
     display: flex;
@@ -249,6 +247,24 @@ body {
 .bg_normal {
     background-color: rgb(107, 105, 106);
 }
+.bg_psychic {
+    background-color: rgb(142, 151, 103);
+}
+.bg_fighting {
+    background-color: rgb(12, 3, 7);
+}
+.bg_rock {
+    background-color: rgb(65, 63, 63);
+}
+.bg_ghost {
+    background-color: rgb(160, 31, 95);
+}
+.bg_ice {
+    background-color: rgb(66, 104, 136);
+}
+.bg_dragon {
+    background-color: rgb(165, 76, 17);
+}
 
 .type {
     border: 1px solid;
@@ -285,6 +301,27 @@ body {
 }
 
 
+.load-more-button {
+    display: none; 
+    background-color: rgb(119, 82, 254);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 20px auto;
+    display: block;
+    transition: background-color 0.3s, transform 0.2s;
+    text-align: center;
+}
+
+.load-more-button:hover {
+    background-color: rgb(25, 4, 130);
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
 
 /* Footer Styles */
 .footer {
@@ -315,7 +352,14 @@ body {
 .footer p {
     margin: 0;
 }
-
+.footer a{
+    cursor: pointer;
+}
+.search-icon{
+    height: 34px;
+    width: 34px;
+    margin-right: 5px;
+}
 .title-anker {
     color: white;
     font-size: 24px;
@@ -418,6 +462,10 @@ body {
     .next-button {
         top: 55vh;
     }
+    .load-more-button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
 }
 
 
@@ -469,5 +517,9 @@ body {
         padding: 4px 6px;
         font-size: 12px;
 
+    }
+    .load-more-button {
+        padding: 6px 12px;
+        font-size: 12px;
     }
 }

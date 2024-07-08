@@ -11,6 +11,7 @@
 </head>
 
 <body onload="showLoadingSpinner()">
+
     <header class="header">
         <div class="logo-container">
             <a class="logo-anker" href="index.html"><img src="img/pokemon-logo.png" alt="Pokémon Logo" class="logo"></a>
@@ -19,25 +20,31 @@
             </a>
         </div>
         <div class="search-container">
+            <img class="search-icon" src="img/icons-search.png" alt="">
             <input type="text" id="search" class="search" maxlength="10"
                 placeholder="schreib hier Name von Pokemon zu suchen .." onkeyup="filterNames()">
         </div>
     </header>
+
+
     <div id="loading-container" class="loading-container">
         <img src="img/pokemonball-blue.png" alt="Loading..." class="loading-pokeball">
     </div>
+
     <div id="pokemon-container" class="pokemon-container"></div>
+    <button id="load-more-button" class="load-more-button" onclick="loadMorePokemon()">Load More Pokémon ...</button>
 
     <div id="overlay" class="overlay" onclick="closePopup()">
     </div>
     <div id="pokemon-popup" class="pokemon-popup">
-
     </div>
+
+
     <footer id="footer" class="footer">
         <div class="left-footer">
-            <a href="#">Terms of Service</a>
-            <a href="#">Privacy statement</a>
-            <a href="#">Cookie Statement</a>
+            <a>Terms of Service</a>
+            <a>Privacy statement</a>
+            <a>Cookie Statement</a>
         </div>
         <p>© 2024 Pokodex</p>
     </footer>

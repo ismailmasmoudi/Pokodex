@@ -1,4 +1,5 @@
 const apiUrl = 'https://pokeapi.co/api/v2/pokemon?limit=40&offset=0';
+
 let pokemonData = [];
 
 function showLoadingSpinner() {
@@ -6,12 +7,11 @@ function showLoadingSpinner() {
     document.getElementById('footer').style.display = 'none';
     setTimeout(() => {
         document.getElementById('loading-container').style.display = 'none';
-
     }, 1000);
     fetchAndDisplayPokemonList();
 }
 
-// Funktion, um die Liste der Pokémon abzurufen und anzuzeigen
+// gets and displays the list of PokémonData
 async function fetchAndDisplayPokemonList() {
     try {
         let response = await fetch(apiUrl);
@@ -25,13 +25,13 @@ async function fetchAndDisplayPokemonList() {
         }
         displayPokemonData();
         document.getElementById('footer').style.display = 'block';
-
+        document.getElementById('load-more-button').style.display = 'block'; // Show the button after loading the first 20 Pokémon
     } catch (error) {
         console.error('Fehler beim Abrufen der Pokémon-Daten:', error);
     }
 }
 
-// Funktion, um die Liste der PokémonData anzuzeigen
+// displays the list of PokémonData
 function displayPokemonData() {
     let pokemonContainer = document.getElementById('pokemon-container');
     pokemonContainer.innerHTML = '';
@@ -43,14 +43,18 @@ function displayPokemonData() {
         let pokemonType = pokemon.types.map(typeInfo => typeInfo.type.name);
         let pokemonTypes = pokemonType.join(', ');
 
-        pokemonContainer.innerHTML +=/*html*/`
+        pokemonContainer.innerHTML += HtmlToDisplayPokeomData(pokemonType, pokemonName, pokemonId, pokemonImage, pokemonTypes, i);
+    }
+}
+
+function HtmlToDisplayPokeomData(pokemonType, pokemonName, pokemonId, pokemonImage, pokemonTypes, i) {
+    return `
             <div class="pokemon-card bg_${pokemonType[0]}" onclick="showPokemonDetails(${i})">
-            <h2>#${pokemonId}: ${pokemonName}</h2>
+            <h3>#${pokemonId}: ${pokemonName}</h3>
             <img src="${pokemonImage}" alt="${pokemonName}" class="pokemon-image">
                  <p class="type">${pokemonTypes}</p>
             </div>
         `;
-    }
 }
 
 let currentPokemonIndex = 0; // Variable to track current pokemon index
@@ -127,7 +131,6 @@ function showStats(i) {
     `).join('');
     document.getElementById('popup-content').innerHTML = statsInfo;
     document.getElementById('popup-content').classList.remove("popup-content-row");
-
 }
 
 async function showEvoChain(i) {
@@ -136,9 +139,7 @@ async function showEvoChain(i) {
     const speciesData = await speciesResponse.json();
     const evoChainResponse = await fetch(speciesData.evolution_chain.url);
     const evoChainData = await evoChainResponse.json();
-    document.getElementById('popup-content').classList.add("popup-content-row");
-
-    // Erstellen der Evolutionskette
+    // Creating the evolutionary chain
     const evoChain = [
         {
             name: evoChainData.chain.species.name,
@@ -161,6 +162,11 @@ async function showEvoChain(i) {
             });
         }
     }
+    EvoChainHtml(evoChain);
+}
+
+// Create HTML code for each Pokémon in the evolution chain.  
+async function EvoChainHtml (evoChain){
     const evoChainHtml = await Promise.all(evoChain.map(async evo => {
         const evoResponse = await fetch(evo.url);
         const evoPokemon = await evoResponse.json();
@@ -172,6 +178,7 @@ async function showEvoChain(i) {
         `;
     }));
     document.getElementById('popup-content').innerHTML = evoChainHtml.join('<span class="arrow"> => </span>');
+    document.getElementById('popup-content').classList.add("popup-content-row");
 }
 
 // Searchs a pokemon
@@ -188,15 +195,8 @@ function filterNames() {
         let pokemonType = pokemon.types.map(typeInfo => typeInfo.type.name);
         let pokemonTypes = pokemonType.join(', ');
         if (pokemonName.toLowerCase().includes(search)) {
-            pokemonContainer.innerHTML +=/*html*/`
-            <div class="pokemon-card bg_${pokemonType[0]}" onclick="showPokemonDetails(${i})">
-            <h2>#${pokemonId}: ${pokemonName}</h2>
-            <img src="${pokemonImage}" alt="${pokemonName}" class="pokemon-image">
-                 <p class="type">${pokemonTypes}</p>
-            </div>
-        `;
+            pokemonContainer.innerHTML += HtmlToDisplayPokeomData(pokemonType, pokemonName, pokemonId, pokemonImage, pokemonTypes, i);
         }
-
     }
 }
 
@@ -205,4 +205,22 @@ function closePopup() {
     document.getElementById('pokemon-popup').style.display = 'none';
 }
 
-
+async function loadMorePokemon() {
+    try {
+        let nextApiUrl = 'https://pokeapi.co/api/v2/pokemon?limit=111&offset=40';
+        let response = await fetch(nextApiUrl);
+        let data = await response.json();
+        let pokemonUrls = data.results.map(pokemon => pokemon.url);
+        for (let i = 0; i < pokemonUrls.length; i++) {
+            const url = pokemonUrls[i];
+            let pokemonResponse = await fetch(url);
+            let pokemon = await pokemonResponse.json();
+            pokemonData.push(pokemon);
+        }
+        displayPokemonData();
+        document.getElementById('load-more-button').style.display = 'none'; // Hide the button after loading
+        document.getElementById('footer').style.display = 'block';
+    } catch (error) {
+        console.error('Fehler beim Abrufen der Pokémon-Daten:', error);
+    }
+}
