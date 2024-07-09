@@ -1,4 +1,4 @@
-const apiUrl = 'https://pokeapi.co/api/v2/pokemon?limit=40&offset=0';
+const apiUrl = 'https://pokeapi.co/api/v2/pokemon?limit=20&offset=0';
 
 let pokemonData = [];
 
@@ -7,7 +7,7 @@ function showLoadingSpinner() {
     document.getElementById('footer').style.display = 'none';
     setTimeout(() => {
         document.getElementById('loading-container').style.display = 'none';
-    }, 1000);
+    }, 2000);
     fetchAndDisplayPokemonList();
 }
 
@@ -82,11 +82,15 @@ function updatePopupContent(currentPokemonIndex) {
     let pokemonTypes = pokemonType.join(', ');
 
     const popupContent = document.getElementById('pokemon-popup');
-    popupContent.innerHTML = /*html*/`
+    popupContent.innerHTML = popupHtml(pokemonTypes, pokemonName, pokemonId, pokemonType, pokemonImage, pokemonName);
+    showMainInfo(currentPokemonIndex);
+}
+
+function popupHtml(pokemonTypes, pokemonName, pokemonId, pokemonType, pokemonImage, pokemonName) {
+    return `
         <div class="popup-top">
             <h2>${pokemonName} (ID: ${pokemonId})</h2>
             <div class="bg_${pokemonType[0]} image-cadre">  <img src="${pokemonImage}" alt="${pokemonName}" class="pokemon-image"> </div>
-    
             <p>Type: ${pokemonTypes}</p>
         </div>
             <div class="buttons">
@@ -95,12 +99,11 @@ function updatePopupContent(currentPokemonIndex) {
                 <button onclick="showEvoChain(${currentPokemonIndex})">Evo Chain</button>
             </div>
             <button class="close-popup" onclick="closePopup()">X</button>
-            <button class="prev-button" onclick="showPreviousPokemon()">Previous</button>
-            <button class="next-button" onclick="showNextPokemon()">Next</button>
+             <img src="img/icons-last.png" alt="Previous" class="previous-button" id="previous-button" onclick="showPreviousPokemon()">
+            <img src="img/icons-next.png" alt="Next" id="next-button" class="next-button" onclick="showNextPokemon()">
             <div id="popup-content" class="popup-content">
             </div>
         `;
-    showMainInfo(currentPokemonIndex);
 }
 
 function showPokemonDetails(i) {
@@ -119,6 +122,7 @@ function showMainInfo(i) {
     <p class="main-width">Abilities: ${pokemon.abilities.map(abilityInfo => abilityInfo.ability.name).join(', ')}</p>
 `;
     document.getElementById('popup-content').classList.remove("popup-content-row");
+   
 }
 
 function showStats(i) {
@@ -131,6 +135,8 @@ function showStats(i) {
     `).join('');
     document.getElementById('popup-content').innerHTML = statsInfo;
     document.getElementById('popup-content').classList.remove("popup-content-row");
+
+    
 }
 
 async function showEvoChain(i) {
@@ -147,6 +153,11 @@ async function showEvoChain(i) {
         }
     ];
     let evoData = evoChainData.chain.evolves_to[0];
+    createEvoChain(evoData, evoChain);
+    EvoChainHtml(evoChain);
+}
+
+function createEvoChain(evoData, evoChain) {
     if (evoData) {
         evoChain.push({
             name: evoData.species.name,
@@ -162,11 +173,9 @@ async function showEvoChain(i) {
             });
         }
     }
-    EvoChainHtml(evoChain);
 }
-
 // Create HTML code for each Pokémon in the evolution chain.  
-async function EvoChainHtml (evoChain){
+async function EvoChainHtml(evoChain) {
     const evoChainHtml = await Promise.all(evoChain.map(async evo => {
         const evoResponse = await fetch(evo.url);
         const evoPokemon = await evoResponse.json();
@@ -207,7 +216,7 @@ function closePopup() {
 
 async function loadMorePokemon() {
     try {
-        let nextApiUrl = 'https://pokeapi.co/api/v2/pokemon?limit=111&offset=40';
+        let nextApiUrl = 'https://pokeapi.co/api/v2/pokemon?limit=20&offset=20';
         let response = await fetch(nextApiUrl);
         let data = await response.json();
         let pokemonUrls = data.results.map(pokemon => pokemon.url);
