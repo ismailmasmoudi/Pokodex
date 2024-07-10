@@ -42,7 +42,6 @@ function displayPokemonData() {
         let pokemonImage = pokemon.sprites.other['official-artwork'].front_default;
         let pokemonType = pokemon.types.map(typeInfo => typeInfo.type.name);
         let pokemonTypes = pokemonType.join(', ');
-
         pokemonContainer.innerHTML += HtmlToDisplayPokeomData(pokemonType, pokemonName, pokemonId, pokemonImage, pokemonTypes, i);
     }
 }
@@ -122,7 +121,7 @@ function showMainInfo(i) {
     <p class="main-width">Abilities: ${pokemon.abilities.map(abilityInfo => abilityInfo.ability.name).join(', ')}</p>
 `;
     document.getElementById('popup-content').classList.remove("popup-content-row");
-   
+
 }
 
 function showStats(i) {
@@ -136,7 +135,7 @@ function showStats(i) {
     document.getElementById('popup-content').innerHTML = statsInfo;
     document.getElementById('popup-content').classList.remove("popup-content-row");
 
-    
+
 }
 
 async function showEvoChain(i) {

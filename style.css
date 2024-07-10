@@ -124,9 +124,11 @@ body {
     margin-top: 10px;
     justify-content: center;
 }
-.top-row-prev-next-button{
+
+.top-row-prev-next-button {
     top: 61%;
 }
+
 .pokemon-popup .buttons button {
     background-color: rgb(119, 82, 254);
     color: white;
@@ -146,6 +148,7 @@ body {
     align-items: center;
     margin: 0;
     width: 230px;
+    font-size: 13px;
 }
 
 .stats-bar span {
@@ -335,41 +338,6 @@ body {
     cursor: pointer;
 }
 
-
-/* Footer Styles */
-.footer {
-    background-color: rgb(25, 4, 130);
-    color: white;
-    text-align: center;
-    padding: 10px 0;
-    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.footer .left-footer {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-bottom: 10px;
-}
-
-.footer .left-footer a {
-    color: white;
-    margin: 0 10px;
-    text-decoration: none;
-}
-
-.footer .left-footer a:hover {
-    text-decoration: underline;
-}
-
-.footer p {
-    margin: 0;
-}
-
-.footer a {
-    cursor: pointer;
-}
-
 .search-icon {
     height: 34px;
     width: 34px;
@@ -436,6 +404,40 @@ body {
     transform: translateY(-50%) scale(1.1);
 }
 
+/* Footer Styles */
+.footer {
+    background-color: rgb(25, 4, 130);
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.footer .left-footer {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.footer .left-footer a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+}
+
+.footer .left-footer a:hover {
+    text-decoration: underline;
+}
+
+.footer p {
+    margin: 0;
+}
+
+.footer a {
+    cursor: pointer;
+}
+
 
 @media (max-width: 768px) {
     .pokemon-popup {
@@ -449,6 +451,7 @@ body {
         font-size: 14px;
         padding: 4px 8px;
     }
+
     .footer .left-footer {
         flex-direction: column;
         align-items: center;
@@ -472,56 +475,59 @@ body {
     .next-button {
         right: 10px;
     }
+
     .previous-button {
         left: 10px;
     }
 }
 
 
-    @media (max-width: 580px) {
-        .header {
-            flex-direction: column;
-        }
-        .search-container {
-            width: 100%;
-            margin-top: 10px;
-            justify-content: center;
-        }
-        .search {
-            width: 80%;
-        }
+@media (max-width: 580px) {
+    .header {
+        flex-direction: column;
     }
 
-    @media (max-width: 420px) {
-        .pokemon-popup {
-            width: 80%;
-            padding: 10px;
-        }
-
-        .pokemon-popup p {
-            font-size: 12px;
-        }
-
-        .evo-chain-item img {
-            width: 50px;
-        }
-
-        .image-cadre {
-            width: 250px;
-        }
-
-        .pokemon-popup h2 {
-            font-size: 16px;
-        }
-
-        .load-more-button {
-            padding: 6px 12px;
-            font-size: 12px;
-        }
-
-        .previous-button,
-        .next-button {
-            width: 35px;
-            top: 56%;
-        }
+    .search-container {
+        width: 100%;
+        margin-top: 10px;
+        justify-content: center;
     }
+
+    .search {
+        width: 80%;
+    }
+}
+
+@media (max-width: 420px) {
+    .pokemon-popup {
+        width: 80%;
+        padding: 10px;
+    }
+
+    .pokemon-popup p {
+        font-size: 12px;
+    }
+
+    .evo-chain-item img {
+        width: 50px;
+    }
+
+    .image-cadre {
+        width: 250px;
+    }
+
+    .pokemon-popup h2 {
+        font-size: 16px;
+    }
+
+    .load-more-button {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .previous-button,
+    .next-button {
+        width: 35px;
+        top: 56%;
+    }
+}
