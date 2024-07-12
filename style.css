@@ -209,7 +209,7 @@ body {
 }
 
 .main-width {
-    width: 250px;
+    width: 220px;
 }
 
 .image-cadre {
@@ -263,7 +263,7 @@ body {
 }
 
 .bg_fighting {
-    background-color: rgb(12, 3, 7);
+    background-color: rgb(36, 25, 30);
 }
 
 .bg_rock {
@@ -280,6 +280,14 @@ body {
 
 .bg_dragon {
     background-color: rgb(165, 76, 17);
+}
+
+.bg_steel {
+    background-color: rgb(31, 81, 110);
+}
+
+.bg_dark {
+    background-color: rgb(2, 2, 2);
 }
 
 .type {
@@ -337,6 +345,30 @@ body {
     transform: scale(1.05);
     cursor: pointer;
 }
+
+.loading {
+    display: none;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 20px auto;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.1;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.1;
+    }
+}
+
 
 .search-icon {
     height: 34px;
@@ -469,7 +501,7 @@ body {
     .next-button,
     .previous-button {
         width: 40px;
-        top: 55%;
+        top: 53%;
     }
 
     .next-button {
@@ -479,8 +511,15 @@ body {
     .previous-button {
         left: 10px;
     }
-}
 
+    .loading {
+        font-size: 14px;
+    }
+
+    .image-cadre {
+        width: 250px;
+    }
+}
 
 @media (max-width: 580px) {
     .header {
@@ -513,7 +552,7 @@ body {
     }
 
     .image-cadre {
-        width: 250px;
+        width: 188px;
     }
 
     .pokemon-popup h2 {
@@ -529,5 +568,9 @@ body {
     .next-button {
         width: 35px;
         top: 56%;
+    }
+
+    .loading {
+        font-size: 12px;
     }
 }

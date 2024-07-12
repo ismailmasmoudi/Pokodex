@@ -2,6 +2,8 @@ const apiUrl = 'https://pokeapi.co/api/v2/pokemon?limit=20&offset=0';
 
 let pokemonData = [];
 
+let currentPokemonIndex = 0; // Variable to track current pokemon index
+
 function showLoadingSpinner() {
     document.getElementById("pokemon-container").innerHTML = '';
     document.getElementById('footer').style.display = 'none';
@@ -25,7 +27,7 @@ async function fetchAndDisplayPokemonList() {
         }
         displayPokemonData();
         document.getElementById('footer').style.display = 'block';
-        document.getElementById('load-more-button').style.display = 'block'; // Show the button after loading the first 20 Pokémon
+        document.getElementById('load-more').style.display = 'block'; // Show the button after loading the first 20 Pokémon
     } catch (error) {
         console.error('Fehler beim Abrufen der Pokémon-Daten:', error);
     }
@@ -56,20 +58,22 @@ function HtmlToDisplayPokeomData(pokemonType, pokemonName, pokemonId, pokemonIma
         `;
 }
 
-let currentPokemonIndex = 0; // Variable to track current pokemon index
-
 function showPreviousPokemon() {
     if (currentPokemonIndex > 0) {
         currentPokemonIndex--;
-        updatePopupContent(currentPokemonIndex);
+    } else {
+        currentPokemonIndex = pokemonData.length - 1; // If first Pokemon, go to last
     }
+    updatePopupContent(currentPokemonIndex);
 }
 
 function showNextPokemon() {
     if (currentPokemonIndex < pokemonData.length - 1) {
         currentPokemonIndex++;
-        updatePopupContent(currentPokemonIndex);
+    } else {
+        currentPokemonIndex = 0; // If last Pokemon, go to first
     }
+    updatePopupContent(currentPokemonIndex);
 }
 
 function updatePopupContent(currentPokemonIndex) {
@@ -79,7 +83,6 @@ function updatePopupContent(currentPokemonIndex) {
     let pokemonImage = pokemon.sprites.other['official-artwork'].front_default;
     let pokemonType = pokemon.types.map(typeInfo => typeInfo.type.name);
     let pokemonTypes = pokemonType.join(', ');
-
     const popupContent = document.getElementById('pokemon-popup');
     popupContent.innerHTML = popupHtml(pokemonTypes, pokemonName, pokemonId, pokemonType, pokemonImage, pokemonName);
     showMainInfo(currentPokemonIndex);
@@ -121,7 +124,6 @@ function showMainInfo(i) {
     <p class="main-width">Abilities: ${pokemon.abilities.map(abilityInfo => abilityInfo.ability.name).join(', ')}</p>
 `;
     document.getElementById('popup-content').classList.remove("popup-content-row");
-
 }
 
 function showStats(i) {
@@ -134,8 +136,6 @@ function showStats(i) {
     `).join('');
     document.getElementById('popup-content').innerHTML = statsInfo;
     document.getElementById('popup-content').classList.remove("popup-content-row");
-
-
 }
 
 async function showEvoChain(i) {
@@ -162,9 +162,7 @@ function createEvoChain(evoData, evoChain) {
             name: evoData.species.name,
             url: evoData.species.url.replace('pokemon-species', 'pokemon')
         });
-
         evoData = evoData.evolves_to[0];
-
         if (evoData) {
             evoChain.push({
                 name: evoData.species.name,
@@ -173,6 +171,7 @@ function createEvoChain(evoData, evoChain) {
         }
     }
 }
+
 // Create HTML code for each Pokémon in the evolution chain.  
 async function EvoChainHtml(evoChain) {
     const evoChainHtml = await Promise.all(evoChain.map(async evo => {
@@ -213,22 +212,48 @@ function closePopup() {
     document.getElementById('pokemon-popup').style.display = 'none';
 }
 
-async function loadMorePokemon() {
+
+let currentOffset = 20;
+const limit = 20;
+
+async function loadPokemon(offset, limit) {
     try {
-        let nextApiUrl = 'https://pokeapi.co/api/v2/pokemon?limit=20&offset=20';
+        let nextApiUrl = `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`;
         let response = await fetch(nextApiUrl);
         let data = await response.json();
         let pokemonUrls = data.results.map(pokemon => pokemon.url);
-        for (let i = 0; i < pokemonUrls.length; i++) {
-            const url = pokemonUrls[i];
+
+        for (let url of pokemonUrls) {
             let pokemonResponse = await fetch(url);
             let pokemon = await pokemonResponse.json();
             pokemonData.push(pokemon);
         }
         displayPokemonData();
-        document.getElementById('load-more-button').style.display = 'none'; // Hide the button after loading
         document.getElementById('footer').style.display = 'block';
     } catch (error) {
         console.error('Fehler beim Abrufen der Pokémon-Daten:', error);
+    }
+}
+
+async function loadMorePokemon() {
+    const loadMoreButton = document.getElementById('load-more');
+    const loadingSpan = document.getElementById('loading');
+    // Hide the button and show the loading indicator
+    loadMoreButton.style.display = 'none';
+    loadingSpan.style.display = 'block';
+    // we have just 1000 Pokemon maximal
+    if (currentOffset == 1000) {
+        loadMoreButton.style.display = 'none';
+    }
+    try {
+        // Load 20 more Pokémon
+        await loadPokemon(currentOffset, limit);
+        currentOffset += limit;
+    } catch (error) {
+        console.error('Error loading Pokémon:', error);
+    } finally {
+        // Hide the loading indicator and show the button
+        loadingSpan.style.display = 'none';
+        loadMoreButton.style.display = 'block';
     }
 }
