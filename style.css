@@ -2,6 +2,9 @@ body {
     font-family: "Playwrite DE Grund";
     background-color: rgb(194, 217, 255);
     color: rgb(25, 4, 130);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     margin: 0;
 }
 
@@ -143,6 +146,10 @@ body {
     background-color: rgb(25, 4, 130);
 }
 
+.pokemon-popup .buttons button:focus {
+    background-color: rgb(25, 4, 130);
+}
+
 .stats-bar {
     display: flex;
     align-items: center;
@@ -206,10 +213,12 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 300px;
 }
 
 .main-width {
     width: 220px;
+    font-size: 14px;
 }
 
 .image-cadre {
@@ -327,7 +336,7 @@ body {
 
 .load-more-button {
     display: none;
-    background-color: rgb(119, 82, 254);
+    background-color: #007bff;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -341,7 +350,7 @@ body {
 }
 
 .load-more-button:hover {
-    background-color: rgb(25, 4, 130);
+    background-color: #0056b3;
     transform: scale(1.05);
     cursor: pointer;
 }
@@ -436,13 +445,41 @@ body {
     transform: translateY(-50%) scale(1.1);
 }
 
+.home-link {
+    display: block;
+    text-align: center;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #007bff; /* Anpassbar je nach Webseitenstil */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    width: fit-content;
+}
+
+.home-link:hover {
+    background-color: #0056b3; /* Anpassbar je nach Webseitenstil */
+}
+
+.back-home{
+    display: none;
+}
+
+.not-found{
+    text-align: center;
+}
+
 /* Footer Styles */
 .footer {
     background-color: rgb(25, 4, 130);
     color: white;
     text-align: center;
     padding: 10px 0;
+    margin-top: auto;
+    width: 100%;
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+    position: relative; /* Falls nötig, um überlappende Inhalte zu vermeiden */
+    bottom: 0; /* Alternativ zu margin-top: auto */
 }
 
 .footer .left-footer {
@@ -472,6 +509,10 @@ body {
 
 
 @media (max-width: 768px) {
+    .home-link {
+        width: 200px;
+        font-size: 16px;
+    }
     .pokemon-popup {
         width: 80%;
         padding: 10px;

@@ -22,32 +22,30 @@
         <div class="search-container">
             <img class="search-icon" src="img/icons-search.png" alt="">
             <input type="text" id="search" class="search" maxlength="10"
-                placeholder="schreib hier Name von Pokemon zu suchen .." onkeyup="filterNames()">
+                placeholder="Search for Pokémon..." onkeyup="filterNames()">
         </div>
     </header>
-
     <div id="loading-container" class="loading-container">
         <img src="img/pokemonball-blue.png" alt="Loading..." class="loading-pokeball">
     </div>
 
     <div id="pokemon-container" class="pokemon-container"> </div>
+    <div id="back-to-home-page" class="back-home"><a href="./index.html" class="home-link">Back to the home page</a></div>
     <span id="loading" class="loading">Loading...</span>
     <button class="load-more-button" id="load-more" onclick="loadMorePokemon()">Load More Pokémon ...</button>
-
     <div id="overlay" class="overlay" onclick="closePopup()">
     </div>
     <div id="pokemon-popup" class="pokemon-popup">
     </div>
-
-    <footer id="footer" class="footer">
-        <div class="left-footer">
-            <a>Terms of Service</a>
-            <a>Privacy statement</a>
-            <a>Cookie Statement</a>
-        </div>
-        <p>© 2024 Pokodex</p>
-    </footer>
-
 </body>
+
+<footer id="footer" class="footer">
+    <div class="left-footer">
+        <a>Terms of Service</a>
+        <a>Privacy statement</a>
+        <a>Cookie Statement</a>
+    </div>
+    <p>© 2024 Pokodex</p>
+</footer>
 
 </html>

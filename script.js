@@ -1,8 +1,12 @@
-const apiUrl = 'https://pokeapi.co/api/v2/pokemon?limit=20&offset=0';
+const apiUrl = 'https://pokeapi.co/api/v2/pokemon?limit=12&offset=0';
 
 let pokemonData = [];
 
 let currentPokemonIndex = 0; // Variable to track current pokemon index
+
+let currentOffset = 12;
+
+const limit = 20;
 
 function showLoadingSpinner() {
     document.getElementById("pokemon-container").innerHTML = '';
@@ -20,10 +24,7 @@ async function fetchAndDisplayPokemonList() {
         let data = await response.json();
         let pokemonUrls = data.results.map(pokemon => pokemon.url);
         for (let i = 0; i < pokemonUrls.length; i++) {
-            const url = pokemonUrls[i];
-            let pokemonResponse = await fetch(url);
-            let pokemon = await pokemonResponse.json();
-            pokemonData.push(pokemon);
+            await renderPokemon(pokemonUrls, i);
         }
         displayPokemonData();
         document.getElementById('footer').style.display = 'block';
@@ -31,6 +32,13 @@ async function fetchAndDisplayPokemonList() {
     } catch (error) {
         console.error('Fehler beim Abrufen der Pokémon-Daten:', error);
     }
+}
+
+async function renderPokemon(pokemonUrls, i) {
+    const url = pokemonUrls[i];
+    let pokemonResponse = await fetch(url);
+    let pokemon = await pokemonResponse.json();
+    pokemonData.push(pokemon);
 }
 
 // displays the list of PokémonData
@@ -57,6 +65,17 @@ function HtmlToDisplayPokeomData(pokemonType, pokemonName, pokemonId, pokemonIma
             </div>
         `;
 }
+
+// displays mit Keyboard next and previous Pokemon , and closes Popup
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'ArrowLeft') {
+        showPreviousPokemon();
+    } else if (event.key === 'ArrowRight') {
+        showNextPokemon();
+    } else if (event.key === 'Escape') {
+        closePopup();
+    }
+});
 
 function showPreviousPokemon() {
     if (currentPokemonIndex > 0) {
@@ -96,12 +115,12 @@ function popupHtml(pokemonTypes, pokemonName, pokemonId, pokemonType, pokemonIma
             <p>Type: ${pokemonTypes}</p>
         </div>
             <div class="buttons">
-                <button onclick="showMainInfo(${currentPokemonIndex})">Main</button>
-                <button onclick="showStats(${currentPokemonIndex})">Stats</button>
-                <button onclick="showEvoChain(${currentPokemonIndex})">Evo Chain</button>
+                <button id="main-button" onclick="showMainInfo(${currentPokemonIndex})">Main</button>
+                <button id="stats-button" onclick="showStats(${currentPokemonIndex})">Stats</button>
+                <button id="evo-chain-button" onclick="showEvoChain(${currentPokemonIndex})">Evo Chain</button>
             </div>
             <button class="close-popup" onclick="closePopup()">X</button>
-             <img src="img/icons-last.png" alt="Previous" class="previous-button" id="previous-button" onclick="showPreviousPokemon()">
+            <img src="img/icons-last.png" alt="Previous" class="previous-button" id="previous-button" onclick="showPreviousPokemon()">
             <img src="img/icons-next.png" alt="Next" id="next-button" class="next-button" onclick="showNextPokemon()">
             <div id="popup-content" class="popup-content">
             </div>
@@ -124,6 +143,7 @@ function showMainInfo(i) {
     <p class="main-width">Abilities: ${pokemon.abilities.map(abilityInfo => abilityInfo.ability.name).join(', ')}</p>
 `;
     document.getElementById('popup-content').classList.remove("popup-content-row");
+    document.getElementById('main-button').style.backgroundColor = 'rgb(25, 4, 130)';
 }
 
 function showStats(i) {
@@ -136,6 +156,7 @@ function showStats(i) {
     `).join('');
     document.getElementById('popup-content').innerHTML = statsInfo;
     document.getElementById('popup-content').classList.remove("popup-content-row");
+    document.getElementById('main-button').style.backgroundColor = 'rgb(119, 82, 254)';
 }
 
 async function showEvoChain(i) {
@@ -154,6 +175,7 @@ async function showEvoChain(i) {
     let evoData = evoChainData.chain.evolves_to[0];
     createEvoChain(evoData, evoChain);
     EvoChainHtml(evoChain);
+    document.getElementById('main-button').style.backgroundColor = 'rgb(119, 82, 254)';
 }
 
 function createEvoChain(evoData, evoChain) {
@@ -190,31 +212,51 @@ async function EvoChainHtml(evoChain) {
 
 // Searchs a pokemon
 function filterNames() {
-    let search = document.getElementById('search').value;
-    search = search.toLowerCase();
+    let search = document.getElementById('search').value.toLowerCase();
     let pokemonContainer = document.getElementById('pokemon-container');
     pokemonContainer.innerHTML = '';
+    let found = false;
     for (let i = 0; i < pokemonData.length; i++) {
         const pokemon = pokemonData[i];
-        let pokemonId = pokemon.id;
-        let pokemonName = pokemon.forms[0].name;
-        let pokemonImage = pokemon.sprites.other['official-artwork'].front_default;
-        let pokemonType = pokemon.types.map(typeInfo => typeInfo.type.name);
-        let pokemonTypes = pokemonType.join(', ');
-        if (pokemonName.toLowerCase().includes(search)) {
-            pokemonContainer.innerHTML += HtmlToDisplayPokeomData(pokemonType, pokemonName, pokemonId, pokemonImage, pokemonTypes, i);
+        if (pokemon.forms[0].name.toLowerCase().includes(search)) {
+            addPokemonToContainer(pokemon, i);
+            found = true;
         }
     }
+    if (!found) {
+        displayNoPokemonFoundMessage();
+    }
+    displayBackHomeLink();
+}
+
+function addPokemonToContainer(pokemon, index) {
+    let pokemonId = pokemon.id;
+    let pokemonName = pokemon.forms[0].name;
+    let pokemonImage = pokemon.sprites.other['official-artwork'].front_default;
+    let pokemonType = pokemon.types.map(typeInfo => typeInfo.type.name);
+    let pokemonTypes = pokemonType.join(', ');
+    const pokemonContainer = document.getElementById('pokemon-container');
+    pokemonContainer.innerHTML += HtmlToDisplayPokeomData(pokemonType, pokemonName, pokemonId, pokemonImage, pokemonTypes, index);
+}
+
+function displayNoPokemonFoundMessage() {
+    const pokemonContainer = document.getElementById('pokemon-container');
+    pokemonContainer.innerHTML += `
+        <p class="not-found">Unfortunately we didn't find your Pokemon.</p>
+    `;
+}
+
+function displayBackHomeLink() {
+    let backHome = document.getElementById("back-to-home-page");
+    backHome.style.display = 'block';
+    const loadMoreButton = document.getElementById('load-more');
+    loadMoreButton.style.display = 'none';
 }
 
 function closePopup() {
     document.getElementById('overlay').style.display = 'none';
     document.getElementById('pokemon-popup').style.display = 'none';
 }
-
-
-let currentOffset = 20;
-const limit = 20;
 
 async function loadPokemon(offset, limit) {
     try {
@@ -242,7 +284,7 @@ async function loadMorePokemon() {
     loadMoreButton.style.display = 'none';
     loadingSpan.style.display = 'block';
     // we have just 1000 Pokemon maximal
-    if (currentOffset == 1000) {
+    if (currentOffset >= 1000) {
         loadMoreButton.style.display = 'none';
     }
     try {
